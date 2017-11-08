@@ -1,0 +1,29 @@
+{
+  "name": "lambda_convert_to_csv",
+  "version": "1.0.0",
+  "description": "Amazon S3 file converter (xlsx to csv)",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js",
+    "package": "zip -r ./package.zip ./ -x *.git* -x test.js -x *.log -x *.zip -x *.md",
+    "deploy": "aws lambda update-function-code --function-name convert_excel_to_csv --zip-file fileb://./package.zip --publish",
+    "publish": "npm run package && npm run deploy"
+  },
+  "engines": {
+    "node": ">= 6.10"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/splawnward/lambda_convert_to_csv.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/splawnward/lambda_convert_to_csv#readme",
+  "dependencies": {
+    "async": "^2.6.0"
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.147.0"
+  }
+}
