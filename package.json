@@ -24,6 +24,7 @@
     "async": "^2.6.0"
   },
   "devDependencies": {
-    "aws-sdk": "^2.147.0"
+    "aws-sdk": "^2.147.0",
+    "xlsx": "^0.11.8"
   }
 }

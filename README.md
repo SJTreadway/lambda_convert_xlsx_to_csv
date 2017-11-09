@@ -16,5 +16,5 @@ $ npm test
 
 ```bash
 $ npm version patch
-$ npm publish
+$ npm run publish
 ```
