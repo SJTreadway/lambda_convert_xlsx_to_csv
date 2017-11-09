@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "node test.js",
-    "package": "zip -r ./package.zip ./ -x *.git* -x test.js -x *.log -x *.zip -x *.md",
+    "package": "zip -r ./package.zip ./ -x *.git* -x test.js -x *.log -x *.zip -x *.md -x .idea/* -x .env",
     "deploy": "aws lambda update-function-code --function-name convert_excel_to_csv --zip-file fileb://./package.zip --publish",
     "publish": "npm run package && npm run deploy"
   },
