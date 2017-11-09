@@ -4,12 +4,12 @@ Amazon S3 file converter (xlsx to csv)
 
 # Description
 
-Lambda function that reads a file from s3, converts it from a ```.xlsx``` file into a ```.csv``` file, then stores the ```.csv``` file in s3.
+Lambda function that reads an ```.xlsx``` file from S3, creates a ```.csv``` copy of the file within S3, then archives the ```.xlsx``` file.
 
 # Testing
 
 ```bash
-$ npm test
+$ npm run test
 ```
 
 # Update AWS Lambda

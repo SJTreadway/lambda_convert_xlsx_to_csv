@@ -10,10 +10,10 @@ const event = {
                       configurationId: 'testConfigRule',
                       object         :
                           {
-                              eTag     : 'eb396fc1c3a563fcce0bb2e14a5bc20e',
+                              eTag     : 'c80513185be9b106787e43ca0512e8ea',
                               sequencer: '0A1B2C3D4E5F678901',
-                              key      : 'BLS_SF',
-                              size     : 4753318
+                              key      : 'BLS_SF.xlsx',
+                              size     : 4751883
                           },
                       bucket         :
                           {
