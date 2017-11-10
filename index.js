@@ -7,9 +7,10 @@ const xlsx = require('xlsx');
 const s3   = new aws.S3();
 
 exports.handler = (event, context, callback) => {
-    console.log('Received event:', JSON.stringify(event, null, 2));
-    const bucket   = JSON.parse(event.Records[0].s3.bucket.name);
-    const key      = JSON.parse(event.Records[0].s3.object.key);
+    //console.log('Received event:', JSON.stringify(event, null, 2));
+    console.log('EVENT: ', event);
+    const bucket   = event.Records[0].s3.bucket.name;
+    const key      = event.Records[0].s3.object.key;
     const fileName = key.indexOf('.') === -1 ? key : key.substring(0, key.indexOf('.'));
     convertToCSV(bucket, key, fileName);
 };
