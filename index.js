@@ -48,7 +48,7 @@ function copyToS3 (params, fileName) {
     return s3.putObject(params, (err) => {
         console.log('Saving object to S3 as CSV..');
         const date = new Date().toLocaleDateString();
-        params.Key = `archive/${ fileName }_${ date }`;
+        params.Key = `archive/${ date }_${ fileName }`;
         return err ? err : s3.putObject(params, (err) => {
             console.log('Copying object to archive directory..');
             params.Key = key;
