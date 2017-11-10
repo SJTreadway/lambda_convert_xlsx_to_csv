@@ -24,6 +24,7 @@ function convertToCSV (bucket, key, fileName) {
         const writer = fs.createWriteStream(`${ fileName }.csv`);
         console.log('Streaming to csv file..');
         const wb = xlsx.read(data.Body, {type: 'buffer'});
+        // TODO: Need a way to pass through specific sheet #'s that we want to convert to csv
         const ws = wb.Sheets[wb.SheetNames[0]];
         return xlsx.stream.to_csv(ws).pipe(writer).on('finish', () => {
             return fs.readFile(`${ fileName }.csv`, (err, data) => {
