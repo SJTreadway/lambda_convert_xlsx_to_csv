@@ -1,4 +1,4 @@
-# lambda_convert_to_csv
+# lambda_convert_xlsx_to_csv
 
 Amazon S3 file converter (xlsx to csv)
 
