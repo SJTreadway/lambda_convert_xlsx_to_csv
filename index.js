@@ -37,7 +37,7 @@ function convertToCSV (bucket, key, fileName) {
 }
 
 function uploadToS3 (params, fileName) {
-    console.log('Uploading object to S3 as CSV..');
+    console.log('Uploading csv file to S3..');
     params.Key = `${ fileName }.csv`;
     return s3.putObject(params, (err) => {
         return err ? err : archiveInS3(params, fileName);
@@ -45,20 +45,18 @@ function uploadToS3 (params, fileName) {
 }
 
 function archiveInS3 (params, fileName) {
-    console.log('Copying object to archive directory..');
+    console.log('Copying xlsx file to archive directory..');
     const date = moment().format();
-    const key  = params.Key;
     delete params.Body;
-    params.CopySource = `/${ params.Bucket }/${ fileName }.csv`;
+    params.CopySource = `/${ params.Bucket }/${ fileName }`;
     params.Key = `archive/${ fileName }_${ date }`;
     return s3.copyObject(params, (err) => {
-        params.Key = key;
         return err ? err : removeFromS3(params, fileName);
     });
 }
 
 function removeFromS3 (params, fileName) {
-    console.log('Removing original object from S3..');
+    console.log('Removing original xlsx from S3..');
     params.Key = `${ fileName }`;
     delete params.CopySource;
     return s3.deleteObject(params, (err) => {
