@@ -1,10 +1,11 @@
 'use strict';
 console.log('Loading Function..');
 
-const aws  = require('aws-sdk');
-const fs   = require('fs');
-const xlsx = require('xlsx');
-const s3   = new aws.S3();
+const aws    = require('aws-sdk');
+const fs     = require('fs');
+const xlsx   = require('xlsx');
+const moment = require('moment');
+const s3     = new aws.S3();
 
 exports.handler = (event, context, callback) => {
     console.log('Received event:', JSON.stringify(event, null, 2));
@@ -47,7 +48,7 @@ function copyToS3 (params, fileName) {
     params.Key = `${ fileName }.csv`;
     return s3.putObject(params, (err) => {
         console.log('Saving object to S3 as CSV..');
-        const date = new Date().toLocaleDateString();
+        const date = moment.format();
         params.Key = `archive/${ date }_${ fileName }`;
         return err ? err : s3.putObject(params, (err) => {
             console.log('Copying object to archive directory..');
