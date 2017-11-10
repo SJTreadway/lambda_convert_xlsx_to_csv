@@ -16,6 +16,7 @@ exports.handler = (event, context, callback) => {
 };
 
 function convertToCSV (bucket, key, fileName) {
+    console.log('Streaming to csv file..');
     const params = {
         Bucket: bucket,
         Key   : key
@@ -23,7 +24,6 @@ function convertToCSV (bucket, key, fileName) {
     // retrieve xlsx file & convert to csv
     return s3.getObject(params, (err, data) => {
         const writer = fs.createWriteStream(`/tmp/${ fileName }.csv`);
-        console.log('Streaming to csv file..');
         const wb = xlsx.read(data.Body, {type: 'buffer'});
         // TODO: Need a way to pass through specific sheet #'s that we want to convert to csv
         const ws = wb.Sheets[wb.SheetNames[0]];
@@ -37,31 +37,31 @@ function convertToCSV (bucket, key, fileName) {
 }
 
 function uploadToS3 (params, fileName) {
+    console.log('Uploading object to S3 as CSV..');
+    params.Key = `${ fileName }.csv`;
     return s3.putObject(params, (err) => {
-        console.log('Uploading object to s3..');
-        return err ? err : copyToS3(params, fileName);
+        return err ? err : archiveInS3(params, fileName);
     });
 }
 
-function copyToS3 (params, fileName) {
+function archiveInS3 (params, fileName) {
+    console.log('Copying object to archive directory..');
+    const date = moment().format();
     const key  = params.Key;
-    params.Key = `${ fileName }.csv`;
-    return s3.putObject(params, (err) => {
-        console.log('Saving object to S3 as CSV..');
-        const date = moment().format();
-        params.Key = `archive/${ fileName }_${ date }`;
-        return err ? err : s3.putObject(params, (err) => {
-            console.log('Copying object to archive directory..');
-            params.Key = key;
-            return err ? err : removeFromS3(params, fileName);
-        });
+    delete params.Body;
+    params.CopySource = `/${ params.Bucket }/${ fileName }.csv`;
+    params.Key = `archive/${ fileName }_${ date }`;
+    return s3.copyObject(params, (err) => {
+        params.Key = key;
+        return err ? err : removeFromS3(params, fileName);
     });
 }
 
 function removeFromS3 (params, fileName) {
-    delete params.Body;
+    console.log('Removing original object from S3..');
+    params.Key = `${ fileName }`;
+    delete params.CopySource;
     return s3.deleteObject(params, (err) => {
-        console.log('Removing original object from s3..');
-        return err ? err : fs.unlink(`/tmp/${ fileName }.csv`, (err) => err ? err : console.log('Successfully Deleted!'));
+        return err ? err : fs.unlink(`/tmp/${ fileName }.csv`, (err) => err ? err : console.log('Successful!'));
     });
 }

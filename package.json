@@ -1,6 +1,6 @@
 {
   "name": "lambda_convert_to_csv",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Amazon S3 file converter (xlsx to csv)",
   "main": "index.js",
   "scripts": {
